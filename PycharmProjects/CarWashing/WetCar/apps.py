@@ -1,0 +1,13 @@
+from django.apps import AppConfig
+
+
+class CarwashConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'WetCar'
+
+    def ready(self):
+        import WetCar.signals
+
+
+
+
