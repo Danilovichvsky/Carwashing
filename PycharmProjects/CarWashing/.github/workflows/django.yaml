@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Убедитесь, что requirements.txt находится в корне репозитория
+          pip install -r C:/Users/Данил/PycharmProjects/CarWashing/requirements.txt
 
       - name: Lint with flake8
         run: |
