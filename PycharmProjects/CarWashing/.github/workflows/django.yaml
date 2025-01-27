@@ -26,9 +26,9 @@ jobs:
     - name: Run Tests
       env:
         SECRET_KEY: django-insecure-55_4^n6dqjolsrmrr@&87=(zu$dc_s8jo+l^eg!pqtapfnnx2-
-        DB_NAME: mydb
-        DB_USER: userdb
-        DB_PASSWORD: password
+        DB_NAME: CarWash
+        DB_USER: postgres
+        DB_PASSWORD: 25122002
         DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
         DEBUG_MODE: False
       run: |
