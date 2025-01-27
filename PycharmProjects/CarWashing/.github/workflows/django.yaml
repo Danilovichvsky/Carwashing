@@ -1,35 +1,36 @@
-name: Django CI
+name: Pull Request Check
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    branches:
+      - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8, 3.9, 3.10]  # Используйте более новые версии
-
+    env:
+      USE_SQLITE: True
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2  # Используйте более новую версию setup-python
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r CarWashing/requirements.txt
-    - name: Run Tests
-      env:
-        SECRET_KEY: django-insecure-55_4^n6dqjolsrmrr@&87=(zu$dc_s8jo+l^eg!pqtapfnnx2-
-        DB_NAME: CarWash
-        DB_USER: postgres
-        DB_PASSWORD: 25122002
-        DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
-        DEBUG_MODE: False
-      run: |
-        py manage.py test
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Lint with flake8
+        run: |
+          flake8 .
+      - name: Test with Django test
+        run: |
+          python manage.py test
+      - name: Check migrations
+        run: |
+          python manage.py makemigrations --check --dry-run
+      - name: Code coverage
+        run: |
+          coverage run --source='.' manage.py test
+          coverage report --fail-under=80
