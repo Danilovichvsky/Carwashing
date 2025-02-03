@@ -1,5 +1,7 @@
 {% extends "WetCar/base.html" %}
 
+{% load static %}  <!-- Добавьте этот тег для загрузки статических файлов -->
+
 {% block title %}Головна{% endblock %}
 
 {% block content %}
@@ -7,7 +9,7 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: url("static/WetCar/images/v6_3.png") no-repeat center center fixed;
+      background: url("{% static 'WetCar/images/v6_3.png' %}") no-repeat center center fixed;
       background-size: cover;
       color: white;
   }
@@ -34,85 +36,18 @@
 
         <button type="submit">Забронювати</button>
     </form>
-
-
 </div>
-
 
 <!-- The confirmation message -->
+{% if confirmation_message %}
 <div id="confirmation-message"
-     style="display: none; color: white; text-align: center; font-size: 20px; background-color: rgba(0, 0, 0, 0.7); padding: 20px; border-radius: 10px;">
-    Заказ сформирован, очікуйте на дзвінок!
+     style="display: block; color: white; text-align: center; font-size: 20px; background-color: rgba(0, 0, 0, 0.7); padding: 20px; border-radius: 10px;">
+    {{ confirmation_message }}
 </div>
+{% endif %}
 
 <script>
-    document.getElementById('booking-form').addEventListener('submit', async function (event) {
-        event.preventDefault(); // Останавливаем стандартную отправку формы
-
-        const form = event.target;
-        const formData = new FormData(form);
-
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            });
-
-            if (response.ok) {
-                const confirmationMessage = document.getElementById('confirmation-message');
-                confirmationMessage.style.display = 'block'; // Показываем сообщение
-
-                // Скрываем сообщение через 5 секунд
-                setTimeout(() => {
-                    confirmationMessage.style.display = 'none';
-                }, 5000);
-
-                // Очищаем форму (опционально)
-                form.reset();
-            } else {
-                const errors = await response.json();
-                displayErrors(errors); // Показываем ошибки (опционально)
-            }
-        } catch (error) {
-            console.error('Ошибка при отправке формы:', error);
-        }
-    });
-
-    function displayErrors(errors) {
-    // Очищаем существующие ошибки
-    document.querySelectorAll('.errorlist').forEach((errorList) => errorList.remove());
-
-    // Проходим по всем полям формы
-    for (const [fieldName, fieldErrors] of Object.entries(errors)) {
-        const field = document.querySelector(`[name="${fieldName}"]`);
-        if (field) {
-            // Находим контейнер для текущего поля
-            const fieldContainer = field.closest('.form-field');
-
-            // Создаем список ошибок
-            const errorList = document.createElement('ul');
-            errorList.className = 'errorlist';
-
-            // Добавляем ошибки в список
-            fieldErrors.forEach((error) => {
-                const errorItem = document.createElement('li');
-                errorItem.textContent = error;
-                errorList.appendChild(errorItem);
-            });
-
-            // Вставляем ошибки после поля
-            fieldContainer.appendChild(errorList);
-        }
-    }
-}
-
 </script>
-
-
-
 
 {% if form %}
 <p>Форма отображается правильно</p>

@@ -20,8 +20,6 @@ class Add_service(forms.ModelForm):
         }
 
 
-
-
 class AnonymousBookingForm(forms.ModelForm):
     class Meta:
         model = Booking
@@ -61,7 +59,8 @@ class AnonymousBookingForm(forms.ModelForm):
                 raise ValidationError("Телефон должен быть в формате 0935042254.")
 
             # Список кодов операторов Украины
-            valid_codes = ['039', '050', '063', '066', '067', '068', '073', '091', '092', '093', '094', '095', '096', '097',
+            valid_codes = ['039', '050', '063', '066', '067', '068', '073', '091', '092', '093', '094', '095', '096',
+                           '097',
                            '098', '099']
 
             # Проверка кода оператора
@@ -80,13 +79,13 @@ class AnonymousBookingForm(forms.ModelForm):
 
             # Проверка формата номера машины
             if not re.match(car_number_pattern, car_number):
-                raise ValidationError("Номер машины должен быть в формате: ХХ1234ХХ, где Х - украинская буква, а 1234 - цифры.")
+                raise ValidationError(
+                    "Номер машины должен быть в формате: ХХ1234ХХ, где Х - украинская буква, а 1234 - цифры.")
         return car_number
 
     def clean_time(self):
         date = self.cleaned_data.get('date')
         selected_time = self.cleaned_data.get('time')
-
 
         now = datetime.now()
 
@@ -102,7 +101,7 @@ class AnonymousBookingForm(forms.ModelForm):
         cleaned_data = super().clean()
 
         # Проверяем, что все поля не пустые
-        for field in ['name', 'car_number','car_brand', 'email', 'phone', 'date', 'time', 'service']:
+        for field in ['name', 'car_number', 'car_brand', 'email', 'phone', 'date', 'time', 'service']:
             if not cleaned_data.get(field):
                 self.add_error(field, f"Поле {field} не может быть пустым.")
 

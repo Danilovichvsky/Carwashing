@@ -151,12 +151,15 @@
     background-color: rgba(0, 0, 0, 0.7); /* Прозрачный фон */
     padding: 20px;
     border-radius: 10px;
-    margin-top: 100px;
+    margin-top: 20px;  /* Уменьшаем отступ сверху */
+    margin-bottom: 20px; /* Убираем лишний отступ снизу */
+    margin-left: auto;
+    margin-right: auto;
     width: 80%;
     max-width: 600px;
-    margin-left: center;
-    margin-right: center;
 }
+
+
 
 /* Стили для заголовка формы */
 .booking-form h2 {
@@ -231,10 +234,8 @@
 .scroll-button:hover {
     background-color: #e67e22;
 }
-/* Form section */
-.booking-form {
-    margin-top: 550px;
-}
+
+
 /* Smooth scroll effect */
 html {
     scroll-behavior: smooth;
