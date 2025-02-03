@@ -8,48 +8,30 @@ class BookingSerializer(serializers.ModelSerializer):  # Используем Mo
     from .Service_serializer import ServiceSerializer
     from .Customer_serializer import CustomerSerializer
     number = serializers.IntegerField(source='id', read_only=True)
-    customer = CustomerSerializer()
     service = ServiceSerializer()
-    custom_field = serializers.SerializerMethodField()  # Поле для вычисляемого значения
-
-    """def to_representation(self, instance):
-        # Полностью ручная сериализация
-        return {
-            "number": instance.id,
-            "customer": {
-                "name": instance.customer.customer,
-                "email": instance.customer.email,
-            },
-            "service": {
-                "name": instance.service.name,
-                "price": instance.service.price,
-            },
-            "date": instance.date.strftime('%Y-%m-%d'),
-            "time": instance.time.strftime('%H:%M:%S'),
-            "status": instance.status,
-            "user_id": instance.user_id,
-            "custom_field": self.get_custom_field(instance),  # Вызываем вручную
-        }"""
-    def get_custom_field(self, obj):
-        # Здесь можно указать любой вычисляемый результат
-        return f"Custom data for booking {obj.id}"
+    customer = CustomerSerializer()
+   # customer = serializers.SerializerMethodField()  # Поле для вычисляемого значения
 
     class Meta:
         model = Booking
-        fields = 'number', 'customer', 'service', 'date', 'time', 'status', 'user_id','custom_field'  # Поля модели, которые будут включены в сериализацию
+        fields = 'number', 'customer', 'service', 'date', 'time', 'status',  # Поля модели, которые будут включены в сериализацию
 
 
-class BookingSerializerPost(serializers.ModelSerializer):  # Используем ModelSerializer
+
+class BookingSerializerPost(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = ('customer', 'service', 'date', 'time')  # Поля модели, которые будут включены в сериализацию
+        fields = ('service', 'date', 'time')
 
     def create(self, validated_data):
-        # Добавляем текущего пользователя в данные
-        request = self.context.get('request')  # Получаем запрос из контекста
+        request = self.context.get('request')
         if request and hasattr(request, 'user'):
-            validated_data['user'] = request.user
+            # Проверяем, есть ли уже Customer, связанный с текущим пользователем
+            customer, created = Customer.objects.get_or_create(customer=request.user)
+            validated_data['customer'] = customer
+
         return super().create(validated_data)
+
 
 
 

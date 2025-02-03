@@ -1,0 +1,295 @@
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+    background-color: rgba(0, 0, 0, 0.5); /* Прозрачность шапки */
+}
+
+.header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffd700;
+}
+
+.nav {
+    display: flex;
+    margin-center: auto; /* Сдвигает навигацию вправо */
+}
+
+.nav a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    margin-right: 20px;
+    transition: color 0.3s;
+}
+
+.nav a:hover {
+    color: #ffd700;
+}
+
+.login-btn {
+    background-color: #fdf502;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.login-btn:hover {
+    background-color: #e5d500;
+    transform: scale(1.1);
+}
+
+.background {
+    text-align: center;
+    padding: 50px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.10)); /* Градиент с темным центром */
+    border-radius: 10px;
+    margin-top: 190px;  /* Увеличиваем верхний отступ */
+    margin-left: auto;
+    margin-right: auto; /* Центрируем по горизонтали */
+    width: 80%;
+}
+.background h1, .background p {
+    color: white; /* Цвет текста */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1), -2px -2px 4px rgba(0, 0, 0, 1), 2px -2px 4px rgba(0, 0, 0, 1), -2px 2px 4px rgba(0, 0, 0, 1); /* Черное очертание букв */
+    margin: 10px 0; /* Отступы */
+}
+.zsu {
+    margin-top: 200px;
+    text-align: center;
+    font-size: 24px;
+    transition: opacity 0.5s ease;
+}
+
+    /* Add smooth transition for opacity */
+.zsu-fade {
+    opacity: 0;
+}
+
+.zsu h1 {
+    font-size: 45px;
+    text-align: center; /* Центрируем текст */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1), -2px -2px 4px rgba(0, 0, 0, 1),
+    2px -2px 4px rgba(0, 0, 0, 1), -2px 2px 4px rgba(0, 0, 0, 1);
+    color: white;
+    color: #ffd700;
+}
+
+
+.logo img {
+    height: 40px; /* Задайте желаемую высоту логотипа */
+    width: auto; /* Сохранение пропорций */
+    display: block; /* Убираем лишние отступы вокруг изображения */
+}
+
+.contact-numbers {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 15px; /* змінюйте розмір шрифта за потребою */
+    margin-right: 10px; /* додаємо відступ, щоб відділити від навігаційного меню */
+    margin-left: -550px; /* додаємо відступ, щоб відділити від навігаційного меню */
+    color: #ffd700
+
+}
+.contact-numbers p {
+    margin-bottom: 2px; /* Уменьшаем расстояние между абзацами */
+    margin-top: 5px;
+}
+
+
+
+/* Медиазапросы */
+@media (max-width: 480px) {
+    .header {
+        padding: 5px 10px; /* Минимальные отступы */
+    }
+
+    .header .logo {
+        font-size: 16px; /* Ещё меньше размер логотипа */
+    }
+
+    .nav a {
+        font-size: 12px; /* Уменьшенный шрифт */
+        padding: 3px 5px;
+    }
+
+    .login-btn {
+        font-size: 12px; /* Уменьшение шрифта кнопки */
+        padding: 3px 10px; /* Узкая кнопка */
+    }
+}
+
+#confirmation-message {
+    display: none;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 400px;
+    z-index: 1000;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+}
+
+.booking-form {
+    background-color: rgba(0, 0, 0, 0.7); /* Прозрачный фон */
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 100px;
+    width: 80%;
+    max-width: 600px;
+    margin-left: center;
+    margin-right: center;
+}
+
+/* Стили для заголовка формы */
+.booking-form h2 {
+    text-align: center;
+    color: #ffd700;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Стили для полей формы */
+.booking-form div {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+}
+
+/* Стили для каждого поля формы */
+.booking-form input,
+.booking-form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Фокус на поля */
+.booking-form input:focus,
+.booking-form select:focus {
+    border-color: #ffd700;
+    outline: none;
+    background-color: #fff;
+}
+
+/* Стили для кнопки отправки */
+.booking-form button {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    background-color: #fdf502;
+    color: black;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.booking-form button:hover {
+    background-color: #e5d500;
+    transform: scale(1.05);
+}
+
+/* Стили для кнопки при отправке */
+.booking-form button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.scroll-button {
+        padding: 15px 30px;
+        font-size: 20px;
+        background-color: #f39c12;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+.scroll-button:hover {
+    background-color: #e67e22;
+}
+/* Form section */
+.booking-form {
+    margin-top: 550px;
+}
+/* Smooth scroll effect */
+html {
+    scroll-behavior: smooth;
+}
+label {
+    display: none;
+}
+input, select {
+    padding: 12px 15px; /* Добавляем отступы внутри полей */
+    font-size: 16px;     /* Размер текста */
+    width: 300px;        /* Ширина полей */
+    margin-left: -10px;  /* Сдвигаем поле влево */
+    margin-bottom: 15px; /* Расстояние между полями */
+    border-radius: 4px;  /* Округление углов */
+    border: 1px solid #ccc; /* Граница полей */
+}
+
+/* Style for the input field when there is an error */
+/* Устанавливаем фон для полей с ошибками */
+.input_field.error {
+    background-color: lightcoral !important;
+}
+
+/* Выделяем текст ошибок */
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 10px; /* Уменьшаем отступ сверху */
+}
+
+/* Чтобы текст ошибок располагался под полем ввода */
+.input_field {
+    margin-bottom: 5px; /* Уменьшаем отступ между полем и ошибкой */
+}
+
+/* Чтобы ошибки выводились под полем */
+.form-field.error {
+    display: flex;
+    flex-direction: column; /* Устанавливаем вертикальное расположение */
+}
+
+.form-field.error input,
+.form-field.error select {
+    border: 2px solid red; /* Красная граница для пустых полей */
+}
+
+/* Стиль для списка ошибок */
+.errorlist {
+    color: red; /* Цвет текста ошибок */
+    font-size: 12px;
+    margin-top: 5px; /* Убираем лишний отступ сверху */
+    padding: 0;
+    list-style-type: none;
+}
+
+.errorlist li {
+    list-style-type: none;
+}

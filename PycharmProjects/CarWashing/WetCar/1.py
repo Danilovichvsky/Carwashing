@@ -35,3 +35,10 @@ def func2(massive:list)->list:
     return sorted(map(lambda x:x**2,massive))
 
 print(func2(not_srtf_mas))
+
+
+import requests
+responce = requests.get("http://127.0.0.1:8000/test2/")
+data = responce.json()
+
+print(data)

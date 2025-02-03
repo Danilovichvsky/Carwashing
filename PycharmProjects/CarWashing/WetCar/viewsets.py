@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from .serializers import CustomerSerializer, ServiceSerializer, BookingSerializer,PaymentSerializer,\
     PaymentSerializerPost,Cust_and_bookingsSerializer,BookingSerializerPost
 from .models import Customer, Service, Booking, Payment
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import *
 
 
@@ -55,9 +55,15 @@ class ServiceViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = Service_filter
 
+    def get_permissions(self):
+        """Просматривать могут все авторизованные, изменять — только администраторы"""
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [IsAdminUser()]  # Только пользователи с is_staff=True
+        return [IsAuthenticated()]  # Остальные методы для всех авторизованных
+
 
 class BookingViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    #permission_classes = (IsAuthenticated,)
     #queryset = Booking.objects.all()
     #authentication_classes = [TokenAuthentication,]
 
@@ -71,8 +77,17 @@ class BookingViewSet(viewsets.ModelViewSet):
         return serializer_class
 
     def get_queryset(self):
-        queryset = Booking.objects.filter(user=self.request.user)
+        # Получаем или создаем объект Customer для текущего пользователя
+        customer = Customer.objects.get(customer=self.request.user)
+        queryset = Booking.objects.filter(customer=customer)
         return queryset
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [IsAuthenticated()]  # Например, только для аутентифицированных пользователей
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
 
 class PaymentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
@@ -88,7 +103,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
         return serializer_class
 
     def get_queryset(self):
-        queryset = Payment.objects.filter(user=self.request.user)
+        queryset = Payment.objects.filter(customer=self.request.user)
         return queryset
 class Customer_with_bookingsViewSet(viewsets.ModelViewSet):
     queryset = Customer.objects.prefetch_related('bcustomer').all()

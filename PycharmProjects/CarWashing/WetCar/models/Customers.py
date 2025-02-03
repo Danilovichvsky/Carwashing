@@ -1,12 +1,13 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
 class Customer(models.Model):
-    customer = models.CharField(max_length=150, unique=True)
+    customer = models.ForeignKey(User,on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15)  # Номер телефона
     car_model = models.CharField(max_length=100, blank=True)  # Модель автомобиля
     car_number = models.CharField(max_length=20, blank=True)  # Госномер автомобиля
-    email = models.CharField(max_length=100, blank=True)
+    email = models.EmailField(max_length=100, blank=True)
 
 
     class Meta:

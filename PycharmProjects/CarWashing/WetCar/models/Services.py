@@ -15,9 +15,7 @@ class Service(models.Model):
     def __str__(self):
         return self.name
 
-@receiver(pre_save,sender = Service)
-def create_service(sender,instance,**kwargs):
-    print(f"The service {instance.name} is about to be created")
+
 
 
 

@@ -1,0 +1,65 @@
+{% extends "WetCar/base.html" %}
+
+{% block title %}Головна{% endblock %}
+
+{% block content %}
+<style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url("static/WetCar/images/v6_3.png") no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+  }
+</style>
+
+<div class="background">
+    <h1>Ласкаво просимо до нашої автомийки!</h1>
+    <p>Ми пропонуємо якісні послуги миття авто для вас.</p>
+</div>
+<div class="scroll-container" style="text-align: center; margin-top: 50px;">
+    <a href="{% url 'booking' %}">
+        <button class="scroll-button" onclick="scrollToForm()">Записатись</button>
+    </a>
+</div>
+
+<div class="zsu">
+    <h1>Слава Україні!</h1>
+    <h1>Слава ЗСУ!</h1>
+</div>
+
+
+
+<script>
+    // Scrolls to the form when the button is clicked
+    function scrollToForm() {
+        document.getElementById('booking-form-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Confirmation message and form submission handling
+
+
+
+
+    // Make the zsu text fade smoothly as the page is scrolled
+    window.addEventListener('scroll', function() {
+        var zsuElement = document.querySelector('.zsu');
+        var scrollPosition = window.scrollY;
+        var maxScroll = 300; // Максимальная прокрутка, после которой opacity = 1
+
+        // Вычисляем прозрачность в зависимости от прокрутки
+        var opacity = 1 - Math.min(scrollPosition / maxScroll, 1);  // Чем выше прокрутка, тем быстрее исчезает
+
+        // Устанавливаем opacity для элемента
+        zsuElement.style.opacity = Math.max(0, Math.min(1, opacity));
+    });
+
+</script>
+
+{% if form %}
+<p>Форма отображается правильно</p>
+{% else %}
+<p>Форма не передана или есть проблема с рендерингом.</p>
+{% endif %}
+
+{% endblock %}
