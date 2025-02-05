@@ -39,5 +39,5 @@
 ## Як запустити проєкт:
 1. Клонувати репозиторій:
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
+   git clone [https://github.com/your-username/your-repo-name.git](https://github.com/Danilovichvsky/Carwashing.git)
    cd your-repo-name
