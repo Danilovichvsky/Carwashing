@@ -24,11 +24,13 @@
   - Онлайн-оплата.
   - Відгуки клієнтів.
   - Налаштування сповіщень (нагадування про бронювання).
+  - API для різних моделей на базі ModelViewSet
 
 ## Що я дізнався, розробляючи цей проєкт:
 - **Робота з Django**:
   - Розробка моделей для управління даними клієнтів та бронювання.
   - Налаштування маршрутизації та views для інтерактивного взаємодії користувачів із сайтом.
+  - Робота з API
 
 - **Фронтенд-інтеграція**:
   - Використання HTML/CSS для створення простого та зрозумілого інтерфейсу.
@@ -39,5 +41,5 @@
 ## Як запустити проєкт:
 1. Клонувати репозиторій:
    ```bash
-   git clone [https://github.com/your-username/your-repo-name.git](https://github.com/Danilovichvsky/Carwashing.git)
+   git clone https://github.com/your-username/your-repo-name.git](https://github.com/Danilovichvsky/Carwashing.git
    cd your-repo-name
