@@ -73,14 +73,18 @@ class AnonymousBookingForm(forms.ModelForm):
         car_number = self.cleaned_data.get('car_number')
 
         # Проверяем, что поле не пустое
-        if car_number:
-            # Регулярное выражение для формата номера машины (2 буквы, 4 цифры, 2 буквы)
-            car_number_pattern = r'^[А-Яа-я]{2}\d{4}[А-Яа-я]{2}$'
+        if not car_number:
+            raise ValidationError("Поле car_number не может быть пустым.")
 
-            # Проверка формата номера машины
-            if not re.match(car_number_pattern, car_number):
-                raise ValidationError(
-                    "Номер машины должен быть в формате: ХХ1234ХХ, где Х - украинская буква, а 1234 - цифры.")
+        # Регулярное выражение для формата номера машины (2 буквы, 4 цифры, 2 буквы)
+        # Поддерживаются как русские (А-Я, а-я), так и английские (A-Z, a-z) буквы
+        car_number_pattern = r'^[А-Яа-яA-Za-z]{2}\d{4}[А-Яа-яA-Za-z]{2}$'
+
+        # Проверка формата номера машины
+        if not re.match(car_number_pattern, car_number):
+            raise ValidationError(
+                "Номер машины должен быть в формате: ХХ1234ХХ, где Х - украинская или английская буква, а 1234 - цифры.")
+
         return car_number
 
     def clean_time(self):

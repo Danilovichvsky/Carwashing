@@ -41,9 +41,14 @@ def main(request):
     return render(request, 'WetCar/main.html')
 
 
+from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
+
+
 def create_booking(request):
     form = AnonymousBookingForm()
     confirmation_message = None  # Начальное значение
+    redirect_url = None  # Переменная для хранения URL редиректа
 
     if request.method == 'POST':
         form = AnonymousBookingForm(request.POST)
@@ -51,8 +56,14 @@ def create_booking(request):
             print(form.cleaned_data)  # Выводим очищенные данные
             form.save()  # Сохраняем данные
             confirmation_message = "Замовлення сформовано, очікуйте на дзвінок!"
-            redirect('main')
+            redirect_url = 'main'  # URL для редиректа после 3 секунд
+
         else:
             print(form.errors)  # Выводим ошибки формы
 
-    return render(request, 'WetCar/booking.html', {'form': form, 'confirmation_message': confirmation_message})
+    return render(request, 'WetCar/booking.html', {
+        'form': form,
+        'confirmation_message': confirmation_message,
+        'redirect_url': redirect_url  # Передаем URL для редиректа
+    })
+

@@ -5,6 +5,7 @@
 {% block title %}Головна{% endblock %}
 
 {% block content %}
+
 <style>
     body {
       margin: 0;
@@ -14,6 +15,7 @@
       color: white;
   }
 </style>
+
 <!-- Форма бронирования -->
 <div id="booking-form-section" class="booking-form">
     <h2>Забронюйте послугу</h2>
@@ -44,10 +46,21 @@
      style="display: block; color: white; text-align: center; font-size: 20px; background-color: rgba(0, 0, 0, 0.7); padding: 20px; border-radius: 10px;">
     {{ confirmation_message }}
 </div>
+<script>
+    // Блокируем форму при отправке
+    document.getElementById('booking-form').querySelectorAll('input, select, button').forEach(function(element) {
+        element.disabled = true;
+    });
+
+    // Через 3 секунды скрываем сообщение и выполняем редирект
+    setTimeout(function() {
+        document.getElementById('confirmation-message').style.display = 'none';
+        window.location.href = "{% url redirect_url %}";  // Редирект на указанную страницу
+    }, 3000);  // 3000 миллисекунд = 3 секунды
+</script>
 {% endif %}
 
-<script>
-</script>
+
 
 {% if form %}
 <p>Форма отображается правильно</p>

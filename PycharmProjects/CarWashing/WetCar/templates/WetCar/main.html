@@ -1,4 +1,5 @@
 {% extends "WetCar/base.html" %}
+{% load static %}
 
 {% block title %}Головна{% endblock %}
 
@@ -7,11 +8,12 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: url("static/WetCar/images/v6_3.png") no-repeat center center fixed;
+      background: url("{% static 'WetCar/images/v6_3.png' %}") no-repeat center center fixed;
       background-size: cover;
       color: white;
   }
 </style>
+
 
 <div class="background">
     <h1>Ласкаво просимо до нашої автомийки!</h1>
