@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 
+from .telegram.tg_webhook import tg_webhook
 from .test_work import BulyaViewSet
 from .viewsets import CustomerViewSet, ServiceViewSet, BookingViewSet, PaymentViewSet, Customer_with_bookingsViewSet, \
     example_viewset1
@@ -13,7 +14,6 @@ router.register('customers', CustomerViewSet,basename="customer")
 router.register('services', ServiceViewSet,basename="1service")
 router.register('bookings', BookingViewSet,basename="booking")
 router.register('payments', PaymentViewSet,basename="payment")
-
 router.register('example_view_customer',example_viewset1,basename='example_view_customer')
 router.register('myorders', Customer_with_bookingsViewSet, basename='myorders_view')
 
@@ -23,7 +23,7 @@ urlpatterns = [
     path('api/', include(router.urls)),  # Используем наш router
     path('test/', test_hi),  # Используем наш router
     path('service/',ServiceViewSet.as_view({'get':'list'})), # вручную обработка вьюсета
-    path('tg/webhook/',handle_message_tg_view),
+    path('tg/webhook/', tg_webhook, name='tg_webhook'),
     #path('bulya/',BulyaViewSet.as_view({'get': 'list'})),
     path('bulya/',BulyaViewSet.as_view()),
     path('test2/',test_hi2),

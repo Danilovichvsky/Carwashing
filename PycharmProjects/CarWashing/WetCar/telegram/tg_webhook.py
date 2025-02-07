@@ -1,13 +1,17 @@
 import os
+import json
 import requests
 from dotenv import load_dotenv
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from WetCar.models import Booking
 
 # Загрузка переменных окружения
 load_dotenv()
 
 def tg_set_webhook():
     token = os.getenv('TELEGRAM_TOKEN')  # Получаем токен из переменных окружения
-    ngrok_url = 'https://fbd1-92-244-126-156.ngrok-free.app/'   # Получаем URL ngrok
+    ngrok_url = 'https://f479-92-244-126-156.ngrok-free.app'   # Получаем URL ngrok
 
     if not token or not ngrok_url:
         raise ValueError("TELEGRAM_TOKEN или NGROK_URL не установлены")
@@ -22,8 +26,73 @@ def tg_set_webhook():
     else:
         print(f"Ошибка при установке webhook: {response.status_code} - {response.text}")
 
-if __name__ == "__main__":
+
+@csrf_exempt
+def tg_webhook(request):
+    if request.method == 'POST':
+        data = request.body.decode('UTF-8')
+        update = json.loads(data)  # Декодируем данные запроса
+
+        print(f"Received update: {update}")  # Логируем данные запроса
+
+        # Проверяем на наличие callback_query
+        if 'callback_query' in update:
+            print(update['callback_query'])
+            callback_data = update['callback_query']['data']  # Получаем callback_data
+            print("Callback data:", callback_data)
+
+            # Разделяем данные
+            try:
+                action, booking_id = callback_data.split('_')  # Разделяем по '_'
+            except ValueError:
+                return JsonResponse({"error": "Invalid callback data format"}, status=400)
+
+            # Обрабатываем, если заказ принят
+            if action == 'accept':
+                try:
+                    booking = Booking.objects.get(id=booking_id)  # Получаем информацию о заказе
+                    send_sms_to_customer(booking)  # Отправляем SMS клиенту
+                    return JsonResponse({"status": "success", "message": "SMS sent to customer."})
+                except Booking.DoesNotExist:
+                    return JsonResponse({"error": f"Booking with ID {booking_id} not found."}, status=404)
+
+        # Обработка команды /start
+        elif 'message' in update and 'text' in update['message'] and update['message']['text'] == '/start':
+            return JsonResponse({"status": "success", "message": "Bot started"})
+
+    return JsonResponse({"error": "Invalid method"}, status=405)
+
+
+def send_sms_to_customer(booking):
+    from twilio.rest import Client
+
+    # Получаем данные из booking
+    phone_number = booking.phone
+    service = booking.service
+    date = booking.date
+    time = booking.time
+
+    # Получаем переменные Twilio из .env
+    account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+    auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+    twilio_number = os.getenv('TWILIO_PHONE_NUMBER')
+
+    # Настроим Twilio клиента
+    client = Client(account_sid, auth_token)
+
+    message = (f"АВТОМОЙКА \n"
+               f"Ваш заказ на услугу {service} подтвержден!\nДата: {date}\nВремя: {time}")
+
+    print(f"Отправка SMS на {phone_number} с сообщением: {message}")  # Добавим лог перед отправкой
+
     try:
-        tg_set_webhook()
+        # Отправка SMS
+        message = client.messages.create(
+            body=message,
+            from_=twilio_number,
+            to=phone_number
+        )
+        print(f"SMS отправлено на {phone_number} с сообщением: {message.body}")
     except Exception as e:
-        print(f"Произошла ошибка: {e}")
+        print(f"Ошибка при отправке SMS: {e}")  # Лог ошибки при отправке
+
