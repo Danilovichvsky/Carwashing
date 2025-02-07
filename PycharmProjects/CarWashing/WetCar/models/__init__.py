@@ -1,4 +1,4 @@
-from .Customers import Customer
+from .Amdins import Amdins
 from .Services import Service
 from .Bookings import Booking
 from .Payments import Payment

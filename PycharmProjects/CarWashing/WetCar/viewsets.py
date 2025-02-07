@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 from .serializers import CustomerSerializer, ServiceSerializer, BookingSerializer,PaymentSerializer,\
     PaymentSerializerPost,Cust_and_bookingsSerializer,BookingSerializerPost
-from .models import Customer, Service, Booking, Payment
+from .models import Amdins, Service, Booking, Payment
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import *
 
@@ -16,7 +16,7 @@ from .filters import *
 class CustomerViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication]
     permission_classes = (IsAuthenticated,)
-    queryset = Customer.objects.all()
+    queryset = Amdins.objects.all()
     serializer_class = CustomerSerializer
     filter_backends = [DjangoFilterBackend,OrderingFilter,SearchFilter]
     filterset_class = Customer_filter
@@ -78,7 +78,7 @@ class BookingViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         # Получаем или создаем объект Customer для текущего пользователя
-        customer = Customer.objects.get(customer=self.request.user)
+        customer = Amdins.objects.get(customer=self.request.user)
         queryset = Booking.objects.filter(customer=customer)
         return queryset
 
@@ -106,7 +106,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
         queryset = Payment.objects.filter(customer=self.request.user)
         return queryset
 class Customer_with_bookingsViewSet(viewsets.ModelViewSet):
-    queryset = Customer.objects.prefetch_related('bcustomer').all()
+    queryset = Amdins.objects.prefetch_related('bcustomer').all()
     serializer_class = Cust_and_bookingsSerializer
 
 
@@ -125,5 +125,5 @@ class CreateListRetrieveViewSet(mixins.CreateModelMixin,
     pass
 
 class example_viewset1(CreateListRetrieveViewSet):
-    queryset = Customer.objects.all()
+    queryset = Amdins.objects.all()
     serializer_class = CustomerSerializer

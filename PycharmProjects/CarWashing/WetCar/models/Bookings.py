@@ -1,11 +1,11 @@
 from django.contrib.auth.models import User
 from django.db import models
 from rest_framework.exceptions import ValidationError
-from ..models import Customer, Service
+from ..models import Amdins, Service
 
 
 class Booking(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    customer = models.ForeignKey(Amdins, on_delete=models.SET_NULL, null=True, blank=True)
     service = models.ForeignKey(Service, blank=True, on_delete=models.CASCADE, null=True)  # Услуга
     date = models.DateField(null=True, blank=True)  # Дата бронирования (позволяет NULL и пустое значение)
     time = models.TimeField(null=True, blank=True)  # Время бронирования

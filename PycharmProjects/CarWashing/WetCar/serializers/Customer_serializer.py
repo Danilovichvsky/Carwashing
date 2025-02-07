@@ -3,7 +3,7 @@ import re
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from ..models import Customer
+from ..models import Amdins
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -27,7 +27,7 @@ class CustomerSerializer(serializers.ModelSerializer):
         return data
 
     class Meta:
-        model = Customer
+        model = Amdins
         fields = ('phone_number', 'car_model', 'car_number', 'email', 'customer_name')  # добавляем customer_name в поля
 
 
@@ -38,5 +38,5 @@ class Cust_and_bookingsSerializer(serializers.ModelSerializer):  # Исполь�
     from .Booking_serializer import BookingSerializer
     bookings = BookingSerializer(source='bcustomer', many=True)
     class Meta:
-        model = Customer
+        model = Amdins
         fields = 'customer','phone_number','car_model','car_number','bookings'  # Поля модели, которые будут включены в сериализаци

@@ -23,11 +23,5 @@ def booking_pre_save(sender, instance, **kwargs):
 
         )
 
-@receiver(post_save,sender = Service)
-def created_service(sender,instance,created,**kwargs):
-    if created:
-        new_service.delay(f"new service is {instance.name}","danya290@ukr.net")
-        write_to_sheet_srvcs.delay()
-    else:
-        print("Error with creating new service")
+
 

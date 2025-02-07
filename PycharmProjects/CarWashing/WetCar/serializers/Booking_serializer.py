@@ -1,6 +1,6 @@
 from django.db import models
 from rest_framework import serializers
-from ..models import Booking, Customer
+from ..models import Booking, Amdins
 from ..tasks import created_booking
 
 
@@ -27,7 +27,7 @@ class BookingSerializerPost(serializers.ModelSerializer):
         request = self.context.get('request')
         if request and hasattr(request, 'user'):
             # Проверяем, есть ли уже Customer, связанный с текущим пользователем
-            customer, created = Customer.objects.get_or_create(customer=request.user)
+            customer, created = Amdins.objects.get_or_create(customer=request.user)
             validated_data['customer'] = customer
 
         return super().create(validated_data)
