@@ -5,7 +5,7 @@ from .telegram.tg_webhook import tg_webhook
 from .test_work import BulyaViewSet
 from .viewsets import CustomerViewSet, ServiceViewSet, BookingViewSet, PaymentViewSet, Customer_with_bookingsViewSet, \
     example_viewset1
-from .views import test_hi, test_hi2, add_service_view, main, create_booking
+from .views import test_hi, test_hi2, add_service_view, main, create_booking, reviews_view
 from .telegram import *
 
 
@@ -29,6 +29,7 @@ urlpatterns = [
     path('test2/',test_hi2),
     path('addservice/',add_service_view,name='add_service_view'),
     path('booking/',create_booking,name='booking'),
+    path('reviews/',reviews_view,name='reviews'),
 
 
 

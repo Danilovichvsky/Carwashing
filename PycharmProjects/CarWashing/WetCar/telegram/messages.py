@@ -1,22 +1,22 @@
-# messages.py
 import os
 import requests
+import logging
+from django.http import JsonResponse
 from dotenv import load_dotenv
+
+# Настройка логирования
+logger = logging.getLogger(__name__)
 
 # Загрузка переменных окружения
 load_dotenv()
-
 
 def send_telegram(text: str, booking_id: int):
     token = os.getenv('TELEGRAM_TOKEN')
     if not token:
         raise ValueError("TELEGRAM_TOKEN is not set or invalid")
 
+    chat_id = 687163088  # Лучше получать динамически
 
-    # Получаем chat_id через getUpdates
-    chat_id = 687163088
-
-    # Отправляем сообщение с кнопками "Прийняти" и "Відхилити"
     send_message_url = f"https://api.telegram.org/bot{token}/sendMessage"
     keyboard = {
         "inline_keyboard": [
@@ -34,11 +34,9 @@ def send_telegram(text: str, booking_id: int):
     })
 
     if response.status_code != 200:
-        print(f"Error {response.status_code}: {response.text}")
+        logger.error(f"Error {response.status_code}: {response.text}")
     else:
-        print(f"Message sent to Telegram: {text}")
-
-
+        logger.info(f"Message sent to Telegram: {text}")
 
 if __name__ == '__main__':
     send_telegram("hello my dog!", 687163088)

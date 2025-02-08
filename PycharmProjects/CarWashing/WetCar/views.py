@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from WetCar.forms import Add_service, AnonymousBookingForm
+from WetCar.forms import Add_service, AnonymousBookingForm, ReviewForm
+from WetCar.models import Review
 
 
 # Create your views here.
@@ -65,5 +66,28 @@ def create_booking(request):
         'form': form,
         'confirmation_message': confirmation_message,
         'redirect_url': redirect_url  # Передаем URL для редиректа
+    })
+
+def reviews_view(request):
+    # Обработка формы
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('reviews')  # Перезагружаем страницу после отправки формы
+    else:
+        form = ReviewForm()
+
+    # Получаем все отзывы
+    reviews = Review.objects.all().order_by('-created_at')  # Отображаем отзывы по дате
+
+    # Подготовка данных для звезд
+    for review in reviews:
+        review.full_stars = ['★'] * review.rating
+        review.empty_stars = ['☆'] * (5 - review.rating)
+
+    return render(request, 'WetCar/reviews.html', {
+        'form': form,
+        'reviews': reviews
     })
 

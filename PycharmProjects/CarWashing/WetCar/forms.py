@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from django import forms
-from .models import Service, Booking
+from .models import Service, Booking, Review
 from django.core.exceptions import ValidationError
 import re
 
@@ -110,3 +110,16 @@ class AnonymousBookingForm(forms.ModelForm):
                 self.add_error(field, f"Поле {field} не может быть пустым.")
 
         return cleaned_data
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['name', 'text', 'rating']
+        widgets = {
+            'text': forms.Textarea(attrs={'rows': 4, 'cols': 40}),
+            'rating': forms.Select(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['rating'].widget.attrs.update({'class': 'rating-select'})

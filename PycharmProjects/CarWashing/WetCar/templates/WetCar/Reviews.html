@@ -1,0 +1,151 @@
+{% extends "WetCar/base.html" %}
+{% load static %}
+{% block title %}Отзывы{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: url("{% static 'WetCar/images/v6_3.png' %}") no-repeat center center fixed;
+        background-size: cover;
+        color: white;
+    }
+
+    .content-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Две равные колонки */
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .reviews-section {
+        display: flex;
+        flex-direction: column;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .reviews-section h1 {
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .review-card {
+        border-bottom: 1px solid #eee;
+        padding: 15px 0;
+    }
+
+    .review-card:last-child {
+        border-bottom: none;
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .review-header h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .review-header .rating {
+        font-size: 16px;
+        color: #f4b400;
+    }
+
+    .review-text {
+        margin: 10px 0;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .review-date {
+        font-size: 12px;
+        color: #aaa;
+    }
+
+    .add-review-form {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .add-review-form h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 18px;
+    }
+
+    .add-review-form form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .add-review-form button {
+        margin-top: 10px;
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .add-review-form button:hover {
+        background: #0056b3;
+    }
+</style>
+
+<main class="content-wrapper">
+    <!-- Список отзывов -->
+    <section class="reviews-section">
+        <h1>Отзывы наших клиентов</h1>
+        {% for review in reviews %}
+        <div class="review-card">
+            <div class="review-header">
+                <h3>{{ review.name }}</h3>
+                <div class="rating">
+                    <!-- Выводим полные звезды -->
+                    {% for star in review.full_stars %}
+                        {{ star }}
+                    {% endfor %}
+                    <!-- Выводим пустые звезды -->
+                    {% for star in review.empty_stars %}
+                        {{ star }}
+                    {% endfor %}
+                </div>
+            </div>
+            <p class="review-text">{{ review.text }}</p>
+            <p class="review-date">Оставлено: {{ review.created_at|date:"d.m.Y" }}</p>
+        </div>
+        {% empty %}
+        <p>Пока отзывов нет. Будьте первым!</p>
+        {% endfor %}
+    </section>
+
+    <!-- Форма добавления -->
+    <div class="add-review-form">
+        <h2>Оставьте свой отзыв</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Отправить отзыв</button>
+        </form>
+    </div>
+</main>
+
+{% endblock %}
