@@ -1,3 +1,5 @@
+import logging
+
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins
@@ -63,9 +65,9 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
 
 class BookingViewSet(viewsets.ModelViewSet):
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     #queryset = Booking.objects.all()
-    #authentication_classes = [TokenAuthentication,]
+    authentication_classes = [SessionAuthentication,]
 
     filter_backends = [DjangoFilterBackend]
     filterset_class = Booking_filter
@@ -77,9 +79,13 @@ class BookingViewSet(viewsets.ModelViewSet):
         return serializer_class
 
     def get_queryset(self):
-        # Получаем или создаем объект Customer для текущего пользователя
-        customer = Amdins.objects.get(customer=self.request.user)
-        queryset = Booking.objects.filter(customer=customer)
+        logger = logging.getLogger(__name__)
+        try:
+            customer = Amdins.objects.get(customer=self.request.user)
+            queryset = Booking.objects.filter(customer=customer)
+        except Amdins.DoesNotExist:
+            logger.warning(f"No Amdins object found for user {self.request.user}")
+            queryset = Booking.objects.none()
         return queryset
 
     def get_permissions(self):

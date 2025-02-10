@@ -28,7 +28,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Amdins
-        fields = ('phone_number', 'car_model', 'car_number', 'email', 'customer_name')  # добавляем customer_name в поля
+        fields = ('phone_number', 'email', 'customer_name')  # добавляем customer_name в поля
 
 
 

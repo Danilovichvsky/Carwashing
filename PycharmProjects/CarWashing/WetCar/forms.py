@@ -116,10 +116,6 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ['name', 'text', 'rating']
         widgets = {
-            'text': forms.Textarea(attrs={'rows': 4, 'cols': 40}),
-            'rating': forms.Select(),
+            'text': forms.Textarea(attrs={'rows': 4, 'cols': 40, 'style': 'resize: none;'}),
+            'rating': forms.RadioSelect(choices=[(i, f"{i} Star") for i in range(1, 6)]),
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['rating'].widget.attrs.update({'class': 'rating-select'})

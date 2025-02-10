@@ -1,117 +1,13 @@
 {% extends "WetCar/base.html" %}
 {% load static %}
+
 {% block title %}Отзывы{% endblock %}
 
 {% block content %}
-
-<style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: url("{% static 'WetCar/images/v6_3.png' %}") no-repeat center center fixed;
-        background-size: cover;
-        color: white;
-    }
-
-    .content-wrapper {
-        display: grid;
-        grid-template-columns: 1fr 1fr; /* Две равные колонки */
-        gap: 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-
-    .reviews-section {
-        display: flex;
-        flex-direction: column;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        height: 100%;
-        overflow-y: auto;
-    }
-
-    .reviews-section h1 {
-        font-size: 24px;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .review-card {
-        border-bottom: 1px solid #eee;
-        padding: 15px 0;
-    }
-
-    .review-card:last-child {
-        border-bottom: none;
-    }
-
-    .review-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .review-header h3 {
-        margin: 0;
-        font-size: 16px;
-        color: #333;
-    }
-
-    .review-header .rating {
-        font-size: 16px;
-        color: #f4b400;
-    }
-
-    .review-text {
-        margin: 10px 0;
-        font-size: 14px;
-        color: #555;
-    }
-
-    .review-date {
-        font-size: 12px;
-        color: #aaa;
-    }
-
-    .add-review-form {
-        background: white;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .add-review-form h2 {
-        text-align: center;
-        margin-bottom: 15px;
-        font-size: 18px;
-    }
-
-    .add-review-form form {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .add-review-form button {
-        margin-top: 10px;
-        padding: 10px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    .add-review-form button:hover {
-        background: #0056b3;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'WetCar/css/style.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <main class="content-wrapper">
-    <!-- Список отзывов -->
     <section class="reviews-section">
         <h1>Отзывы наших клиентов</h1>
         {% for review in reviews %}
@@ -119,13 +15,11 @@
             <div class="review-header">
                 <h3>{{ review.name }}</h3>
                 <div class="rating">
-                    <!-- Выводим полные звезды -->
                     {% for star in review.full_stars %}
-                        {{ star }}
+                        <span class="fa fa-star checked"></span>
                     {% endfor %}
-                    <!-- Выводим пустые звезды -->
                     {% for star in review.empty_stars %}
-                        {{ star }}
+                        <span class="fa fa-star"></span>
                     {% endfor %}
                 </div>
             </div>
@@ -137,15 +31,67 @@
         {% endfor %}
     </section>
 
-    <!-- Форма добавления -->
+    <div class="pagination">
+        {% if reviews.has_previous %}
+            <a href="?page={{ reviews.previous_page_number }}" class="btn-load-more">Предыдущие</a>
+        {% endif %}
+        {% if reviews.has_next %}
+            <a href="?page={{ reviews.next_page_number }}" class="btn-load-more">Загрузить еще</a>
+        {% endif %}
+    </div>
+
     <div class="add-review-form">
         <h2>Оставьте свой отзыв</h2>
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
+
+            <input type="hidden" name="rating" value="0" id="rating-field">
+
+            <div class="rating txt-center">
+                <input id="star5" name="star" type="radio" value="5" class="radio-btn hide" />
+                <label for="star5">☆</label>
+                <input id="star4" name="star" type="radio" value="4" class="radio-btn hide" />
+                <label for="star4">☆</label>
+                <input id="star3" name="star" type="radio" value="3" class="radio-btn hide" />
+                <label for="star3">☆</label>
+                <input id="star2" name="star" type="radio" value="2"  />
+                <label for="star2">☆</label>
+                <input id="star1" name="star" type="radio" value="1" class="radio-btn hide" />
+                <label for="star1">☆</label>
+                <div class="clear"></div>
+            </div>
+
             <button type="submit">Отправить отзыв</button>
         </form>
     </div>
 </main>
+
+<script>
+    // Обработчик для клика на звезды
+    const stars = document.querySelectorAll('.rating .radio-btn');
+    const ratingInput = document.getElementById('rating-field');
+
+    stars.forEach(star => {
+        star.addEventListener('change', () => {
+            const rating = star.value;
+            ratingInput.value = rating;  // Обновляем скрытое поле с рейтингом
+            // Отображаем выбраные звезды
+            updateStars(rating);
+        });
+    });
+
+    // Обновляем отображение звезд
+    function updateStars(rating) {
+        const labels = document.querySelectorAll('.rating label');
+        labels.forEach(label => {
+            if (parseInt(label.getAttribute('for').replace('star', '')) <= rating) {
+                label.style.color = '#FFD700';  // Золотой цвет для выбранных звезд
+            } else {
+                label.style.color = '';  // Сбрасываем цвет для невыбранных звезд
+            }
+        });
+    }
+</script>
 
 {% endblock %}

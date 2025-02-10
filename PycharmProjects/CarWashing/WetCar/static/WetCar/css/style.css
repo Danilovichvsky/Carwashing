@@ -295,3 +295,195 @@ input, select {
     list-style-type: none;
 }
 
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr; /* Одна колонка для отзывов и формы */
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.reviews-section {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+    width: 1000px;  /* Set the same width as the form */
+    margin: 0 auto;  /* Center the section horizontally */
+}
+
+/* Заголовок секции отзывов */
+.reviews-section h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Карточка отзыва */
+.review-card {
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+
+/* Убираем нижнюю границу у последнего отзыва */
+.review-card:last-child {
+    border-bottom: none;
+}
+
+/* Заголовок отзыва */
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Имя автора отзыва */
+.review-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Блок с рейтингом */
+.rating {
+    font-size: 16px;
+    color: #f4b400;
+}
+
+/* Текст отзыва */
+.review-text {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Дата отзыва */
+.review-date {
+    font-size: 12px;
+    color: #aaa;
+}
+
+/* Форма добавления отзыва */
+.add-review-form {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    width: 1000px;  /* Set the same width as the reviews section */
+    margin: 0 auto;  /* Center the form horizontally */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.reviews-section, .add-review-form {
+    max-width: 100%;  /* Ensure they take up the full width of their parent container */
+}
+
+/* Заголовок формы */
+.add-review-form h2 {
+    text-align: center;
+    margin-bottom: 20px;  /* Increased spacing */
+    font-size: 20px;  /* Adjusted font size for better readability */
+}
+
+/* Стиль для формы */
+.add-review-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;  /* Increased gap for better spacing between elements */
+}
+
+/* Стиль для полей ввода и селекта */
+.add-review-form form input,
+.add-review-form form textarea,
+.add-review-form form select {
+    width: calc(100% - 50px);  /* Take full width minus margin-right */
+    padding: 12px;
+    margin-right: 50px;
+    margin-left: 0;  /* Align fields to the left */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;  /* Adjust font size for input fields */
+}
+
+
+/* Кнопка отправки формы */
+.add-review-form button {
+    margin-top: 10px;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;  /* Adjust font size for button */
+}
+
+/* Ховер-эффект для кнопки */
+.add-review-form button:hover {
+    background: #0056b3;
+}
+
+/* Фокус на полях ввода */
+.add-review-form form input:focus,
+.add-review-form form textarea:focus {
+    outline: none;
+    border-color: #007bff;  /* Add focus effect */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+.btn-load-more {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-left: 100px;  /* Adjust to control the button's horizontal position */
+    position: relative;  /* Allows using 'top' for vertical positioning */
+    top: -40px;  /* Moves the button 40px higher */
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+
+
+.btn-load-more:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+    transform: scale(1.05); /* Slightly enlarges the button */
+}
+
+.btn-load-more:active {
+    background-color: #388e3c; /* Even darker green when clicked */
+}
+
+.rating {
+    direction: rtl; /* Отражение звезд справа налево */
+    unicode-bidi: bidi-override;
+    display: inline-block;
+}
+
+.rating input[type="radio"] {
+    display: none;
+}
+
+.rating label {
+    font-size: 30px;
+    color: #ccc; /* Цвет неактивной звезды */
+    cursor: pointer;
+}
+
+.rating input[type="radio"]:checked ~ label {
+    color: #FFD700; /* Цвет активных звезд */
+}
+
+.rating label:hover,
+.rating label:hover ~ label {
+    color: #FFD700; /* Цвет при наведении */
+}

@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -68,26 +69,29 @@ def create_booking(request):
         'redirect_url': redirect_url  # Передаем URL для редиректа
     })
 
+
 def reviews_view(request):
-    # Обработка формы
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('reviews')  # Перезагружаем страницу после отправки формы
     else:
         form = ReviewForm()
 
-    # Получаем все отзывы
-    reviews = Review.objects.all().order_by('-created_at')  # Отображаем отзывы по дате
+    reviews_list = Review.objects.all().order_by('-created_at')
+    paginator = Paginator(reviews_list, 5)  # Разбиение на страницы по 5 отзывов
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    # Подготовка данных для звезд
-    for review in reviews:
-        review.full_stars = ['★'] * review.rating
-        review.empty_stars = ['☆'] * (5 - review.rating)
+    # Обработка звезд для каждого отзыва
+    for review in page_obj:
+        review.full_stars = ['★'] * review.rating  # Полные звезды
+        review.empty_stars = ['☆'] * (5 - review.rating)  # Пустые звезды
 
     return render(request, 'WetCar/reviews.html', {
         'form': form,
-        'reviews': reviews
+        'reviews': page_obj,
+        'star_range': range(1, 6),  # Диапазон для звезд
     })
+
 
