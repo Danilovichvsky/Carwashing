@@ -111,11 +111,8 @@ class AnonymousBookingForm(forms.ModelForm):
 
         return cleaned_data
 
+
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ['name', 'text', 'rating']
-        widgets = {
-            'text': forms.Textarea(attrs={'rows': 4, 'cols': 40, 'style': 'resize: none;'}),
-            'rating': forms.RadioSelect(choices=[(i, f"{i} Star") for i in range(1, 6)]),
-        }

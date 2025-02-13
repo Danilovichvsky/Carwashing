@@ -74,7 +74,8 @@ def reviews_view(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save()  # Сохраняем отзыв с выбранным рейтингом
+            return redirect('reviews')  # Перенаправление после успешной отправки
     else:
         form = ReviewForm()
 
@@ -85,13 +86,11 @@ def reviews_view(request):
 
     # Обработка звезд для каждого отзыва
     for review in page_obj:
-        review.full_stars = ['★'] * review.rating  # Полные звезды
-        review.empty_stars = ['☆'] * (5 - review.rating)  # Пустые звезды
+        review.full_stars = range(review.rating)  # Полные звезды
+        review.empty_stars = range(5 - review.rating)  # Пустые звезды
 
     return render(request, 'WetCar/reviews.html', {
         'form': form,
         'reviews': page_obj,
-        'star_range': range(1, 6),  # Диапазон для звезд
     })
-
 
